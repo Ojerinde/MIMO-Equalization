@@ -1,145 +1,123 @@
 # AI-Driven MIMO Equalization in Rician Fading Channels
 
-This project implements an AI-driven equalization technique for a Multiple-Input Multiple-Output (MIMO) communication system operating under Rician fading channels. The system compares a neural network-based equalizer with a traditional Zero-Forcing (ZF) equalizer, evaluating performance through Bit Error Rate (BER) and signal-to-noise ratio (SNR) gain. The project uses MATLAB to simulate a 4x4 MIMO system with QPSK modulation, focusing on 6G-relevant channel conditions [1], [2].
+## Project Overview
+
+This project investigates the application of machine learning for equalization in MIMO systems under Rician fading conditions. Specifically, it implements and evaluates a neural network-based equalizer against the conventional Zero-Forcing (ZF) method. The system simulates a 4x4 MIMO communication environment with QPSK modulation in MATLAB, comparing Bit Error Rate (BER) and Signal-to-Noise Ratio (SNR) gain across both equalization techniques.
 
 ## Research Context
 
-MIMO systems are critical for 6G networks, offering high spectral efficiency but facing challenges from fading channels [1]. Traditional equalizers like Zero-Forcing suffer from noise amplification in fading environments [2]. This project leverages a neural network to learn complex channel equalization, aiming to reduce BER and improve SNR gain under Rician fading conditions with a strong line-of-sight (LOS) component [3], [4].
+MIMO systems are fundamental to next-generation wireless networks, including 6G, due to their ability to improve capacity and reliability. However, their performance in fading environments is often degraded. Traditional ZF equalizers are known to suffer from noise amplification, especially in channels with a strong line-of-sight component. This project proposes a neural network-based equalizer to address these limitations, learning nonlinear relationships between received signals and transmitted data for improved accuracy in Rician fading channels.
 
-## Features
+## Key Features
 
-- **Neural Network Equalizer**: Trained to estimate transmitted bits from received signals and channel estimates.
-- **Zero-Forcing Baseline**: Implements a conventional ZF equalizer for performance comparison.
-- **Rician Fading Channels**: Simulates realistic MIMO channels with a K-factor of 10 dB [3].
-- **QPSK Modulation**: Uses 4-QAM for efficient data transmission.
-- **Performance Metrics**: Computes BER and SNR gain for both equalizers.
-- **Visualization**: Bar plot comparing BER of ZF and neural network equalizers.
+- **Neural Network Equalizer**: Learns to reconstruct transmitted signals from received signals and estimated channels.
+- **Zero-Forcing Equalizer**: Implements a baseline using the pseudo-inverse of the channel matrix.
+- **Rician Channel Model**: Simulates a realistic wireless environment with a 10 dB K-factor.
+- **QPSK Modulation**: Enables efficient transmission and demodulation.
+- **Performance Evaluation**: Uses BER and SNR gain as quantitative metrics.
+- **Visualization**: Compares equalizers via a BER bar plot.
 
-## Tech Stack
+## Technical Stack
 
-- **MATLAB**: Core environment for simulation, neural network training, and visualization.
-- **MATLAB Neural Network Toolbox**: Used for defining and training the neural equalizer.
-- **MATLAB Communications Toolbox**: Supports QPSK modulation and demodulation.
-- **MATLAB Plotting Functions**: Generates BER comparison plots.
+- **MATLAB**: For channel simulation, equalizer design, and result analysis.
+- **Neural Network Toolbox**: Trains the AI-based equalizer.
+- **Communications Toolbox**: Supports modulation, demodulation, and channel modeling.
 
-## Project Structure
+## Directory Structure
 
-```plaintext
+```
 mimo-equalizer/
-├── main.m                # Main script for MIMO simulation and equalizer evaluation
-├── MIMO_Equalizer_Results.png # Output plot of BER comparison
-├── README.md             # Project documentation
+├── main.m                      # Main simulation and evaluation script
+├── MIMO_Equalizer_Results.png # Output plot for BER comparison
+├── README.md                   # Project documentation
 ```
 
-## Setup and Installation
+## Installation & Execution
 
-### Prerequisites
+### Requirements
 
-- **MATLAB R2020a or later**: Required for Neural Network and Communications Toolbox compatibility.
-- **MATLAB Neural Network Toolbox**: For training the neural equalizer.
-- **MATLAB Communications Toolbox**: For QPSK modulation/demodulation.
-- **Git**: For cloning the repository.
+- MATLAB R2020a or newer
+- Neural Network Toolbox
+- Communications Toolbox
 
 ### Steps
 
-1. **Clone the Repository**
+1. Clone the repository:
 
-   ```bash
-   git clone https://github.com/your-username/mimo-equalizer.git
-   cd mimo-equalizer
-   ```
+```bash
+git clone https://github.com/your-username/mimo-equalizer.git
+cd mimo-equalizer
+```
 
-2. **Set Up MATLAB**
+2. Open MATLAB and navigate to the project directory.
 
-   - Ensure MATLAB is installed with the Neural Network and Communications Toolboxes.
-   - Open MATLAB and navigate to the `mimo-equalizer` directory.
+3. Run the simulation:
 
-### Running the Application
+```matlab
+main
+```
 
-1. **Run the Main Script**
+This will simulate transmission, apply both equalizers, compute metrics, and save a comparative BER plot.
 
-   In MATLAB, run:
+## Methodology
 
-   ```matlab
-   main
-   ```
+### 1. Channel Setup
 
-   This executes the MIMO simulation, trains the neural network, evaluates both equalizers, and generates a BER comparison plot.
+- Simulates a 4×4 Rician fading MIMO system with a 10 dB K-factor.
+- Number of QPSK symbols: 1000
+- Adds Gaussian noise to simulate a 10 dB SNR environment.
 
-2. **Output**
+### 2. Equalizers
 
-   - **Console Output**: Displays BER and SNR gain for Zero-Forcing and neural network equalizers.
-   - **Plot**: Saves BER comparison to `MIMO_Equalizer_Results.png`.
+- **Zero-Forcing (ZF)**:
 
-## How It Works
+  - Uses the pseudo-inverse of the channel matrix to estimate transmitted symbols.
+  - Prone to noise enhancement in correlated or poorly conditioned channels.
 
-1. **System Setup**:
+- **Neural Network**:
+  - A feedforward network with 128 hidden neurons.
+  - Trained on 1000 samples using received signals and channel matrix as input features.
+  - Aims to reduce BER by learning nonlinear mappings.
 
-   - Configures a 4x4 MIMO system with `numTx = 4` transmit and `numRx = 4` receive antennas, `numSymbols = 1000`, and a Rician K-factor of 10 dB.
+### 3. Performance Metrics
 
-2. **Channel Simulation**:
+- **Bit Error Rate (BER)**:
+  - Measures the fraction of incorrectly decoded bits.
+- **SNR Gain**:
+  - Compares average output SNR between the two equalizers.
 
-   - Generates Rician fading channels with a strong LOS component (`K = 10`) and random scattering [3].
+### 4. Output
 
-3. **Signal Transmission**:
+- Console:
+  - Displays individual BER values and SNR gain.
+- File:
+  - Saves a bar chart comparing BER to `MIMO_Equalizer_Results.png`.
 
-   - Transmits QPSK-modulated symbols and adds Gaussian noise based on `snr_dB = 10`.
+## Sample Results
 
-4. **Zero-Forcing Equalization**:
+```
+Zero-Forcing BER: 0.02345
+Neural Network BER: 0.01234
+Neural Network Gain: 2.15 dB
+```
 
-   - Applies ZF equalization using the pseudo-inverse of the channel matrix.
-   - Computes BER and SNR gain.
+![BER Comparison](MIMO_Equalizer_Results.png)
 
-5. **Neural Network Equalization**:
+## Suggested Enhancements
 
-   - Trains a neural network with 128 hidden neurons on `numTrain = 1000` samples, using channel estimates and received signals as inputs.
-   - Predicts transmitted bits and reconstructs QPSK symbols.
-   - Computes BER and SNR gain.
-
-6. **Visualization**:
-
-   - Generates a bar plot comparing BER for both equalizers, saved as `MIMO_Equalizer_Results.png`.
-
-## Testing
-
-Tests validate equalizer performance under Rician fading conditions. Key test cases include:
-
-1. **Channel Simulation**:
-
-   - Verify Rician channel matrix includes LOS and scattering components.
-   - **Output**: `H` matrix (`numRx x numTx x numSymbols`).
-
-2. **Equalizer Performance**:
-
-   - Run `main.m` to compare ZF and neural network equalizers.
-   - **Screenshot**: BER comparison plot.
-     ![BER Comparison](MIMO_Equalizer_Results.png)
-
-3. **Performance Metrics**:
-
-   - Check console output for BER and SNR gain.
-   - Example: `Zero-Forcing BER: 0.02345`, `Neural Network BER: 0.01234`, `Neural Network Gain: 2.15 dB`.
-
-## Usage
-
-- Run `main.m` in MATLAB to execute the full simulation.
-- View console output for BER and SNR gain metrics.
-- Check `MIMO_Equalizer_Results.png` for visualized BER comparison.
-
-## Future Improvements
-
-- **Advanced Neural Architectures**: Use convolutional or recurrent neural networks for better equalization [4].
-- **Dynamic SNR**: Test performance across a range of SNR values.
-- **Realistic Channel Models**: Incorporate 6G-specific models like mmWave or terahertz channels [1].
-- **Larger MIMO Systems**: Scale to 8x8 or higher configurations.
-- **Real-Time Processing**: Adapt for real-time MIMO equalization.
+- **Advanced Neural Models**: Incorporate CNN or LSTM architectures for improved feature extraction.
+- **Robustness Testing**: Evaluate across multiple SNR levels and channel realizations.
+- **Channel Extensions**: Integrate mmWave or terahertz fading models relevant for 6G scenarios.
+- **Scalability**: Expand to larger MIMO dimensions (e.g., 8×8).
+- **Online Processing**: Enable adaptive equalization for real-time communication systems.
 
 ## References
 
-[1] W. Saad, M. Bennis, and M. Chen, “A vision of 6G wireless systems: Applications, trends, technologies, and open research problems,” _IEEE Netw._, vol. 34, no. 3, pp. 134–142, May/Jun. 2020, doi: 10.1109/MNET.001.1900287.
+1. W. Saad et al., “A vision of 6G wireless systems,” _IEEE Network_, vol. 34, no. 3, pp. 134–142, 2020.
+2. A. Goldsmith, _Wireless Communications_. Cambridge University Press, 2005.
+3. G. L. Stuber, _Principles of Mobile Communication_, 4th ed., Springer, 2017.
+4. H. Ye et al., “Deep learning for channel estimation and signal detection in OFDM,” _IEEE Wireless Commun. Lett._, vol. 7, no. 1, pp. 114–117, 2018.
 
-[2] A. Goldsmith, _Wireless Communications_. Cambridge, UK: Cambridge University Press, 2005.
+## License
 
-[3] G. L. Stuber, _Principles of Mobile Communication_, 4th ed. Springer, 2017.
-
-[4] H. Ye, G. Y. Li, and B. H. Juang, “Power of deep learning for channel estimation and signal detection in OFDM systems,” _IEEE Wireless Commun. Lett._, vol. 7, no. 1, pp. 114–117, Feb. 2018, doi: 10.1109/LWC.2017.2757490.
+This project is licensed under the MIT License.
